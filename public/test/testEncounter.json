@@ -1,0 +1,18 @@
+{
+  "name": "test encounter",
+  "date": "2025-03-17",
+  "creatures": [
+    {
+      "name": "test",
+      "initiative": 10,
+      "hp": 30,
+      "ac": 15
+    },
+    {
+      "name": "test2",
+      "initiative": 15,
+      "hp": 30,
+      "ac": 15
+    }
+  ]
+}

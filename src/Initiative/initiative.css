@@ -1,0 +1,12 @@
+.creature-entry {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+  color: black;
+  border: 2px solid;
+  border-radius: 8px;
+  height: 60px;
+  margin: 16px;
+  margin-top: 0;
+}

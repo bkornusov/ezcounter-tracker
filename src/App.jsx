@@ -3,6 +3,8 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import ReactSplit, { SplitDirection } from "@devbookhq/splitter";
+import Initiative from "./Initiative/initiative";
+import Sheet from "./Sheet/sheet";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,15 +14,12 @@ function App() {
       <ReactSplit
         SplitDirection={SplitDirection.Horizontal}
         minWidths={[200, 400]}
+        initialSizes={[35, 65]}
         gutterClassName="custom-gutter-horizontal"
         draggerClassName="custom-dragger-horizontal"
       >
-        <div className="initiative-panel" style={{ background: "beige" }}>
-          <h1>Initiative Panel</h1>
-        </div>
-        <div className="sheet-panel" style={{ background: "lightblue" }}>
-          <h1>Sheet Panel</h1>
-        </div>
+        <Initiative />
+        <Sheet />
       </ReactSplit>
     </>
   );

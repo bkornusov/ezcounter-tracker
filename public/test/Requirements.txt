@@ -1,0 +1,9 @@
+EZcounter tracker features:
+ - Automatic reaction resetter
+ - Concentration tracker
+ - Dynamic initiative tracker
+ - Adjustable window size
+
+
+Initiative panel:
+  - Order?, Initiative, Name, HP, Actions (a-b-r), Concentration, status (Should be updatable)
