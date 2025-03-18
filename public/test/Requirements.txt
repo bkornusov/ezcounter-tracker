@@ -6,4 +6,4 @@ EZcounter tracker features:
 
 
 Initiative panel:
-  - Order?, Initiative, Name, HP, Actions (a-b-r), Concentration, status (Should be updatable)
+  - Order?, Initiative, Name, HP, AC, Actions (a-b-r), Concentration, status (Should be updatable)

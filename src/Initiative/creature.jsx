@@ -1,34 +1,53 @@
 import "./initiative.css";
 import React, { useState, useEffect } from "react";
+import hp from "../../public/icons/hp.png";
+import ac from "../../public/icons/ac.png";
 
-export default function Creature(creature) {
+export default function Creature(data, { updateInitiative }) {
+  const creature = data.data;
   const [initiative, setInitiative] = useState(creature.initiative);
   const [isEditing, setIsEditing] = useState(false);
+
+  function handleChange(e) {
+    if (e.target.value > 99) {
+      setInitiative(99);
+    } else {
+      setInitiative(e.target.value);
+    }
+    updateInitiative();
+  }
 
   return (
     <div className="creature-entry">
       {isEditing ? (
         <input
+          className="stat-value-input"
           type="number"
-          onChange={(e) => setInitiative(e.target.value)}
+          min="-99"
+          max="99"
+          autoFocus
+          onChange={(e) => {
+            handleChange(e);
+          }}
           onBlur={() => {
             setIsEditing(false);
           }}
           value={initiative}
         />
       ) : (
-        <h2
-          onDoubleClick={() => {
+        <span
+          className="stat-value"
+          onClick={() => {
             setIsEditing(true);
           }}
         >
           {initiative}
-        </h2>
+        </span>
       )}
 
-      <h2>{creature.name}</h2>
-      <h2>HP: {creature.hp}</h2>
-      <h2>AC: {creature.ac}</h2>
+      <span>{creature.name}</span>
+      <span style={{ backgroundImage: `url(${hp})` }}>{creature.hp}</span>
+      <span style={{ backgroundImage: `url(${ac})` }}>{creature.ac}</span>
     </div>
   );
 }

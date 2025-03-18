@@ -4,6 +4,7 @@
   align-items: center;
   height: 100%;
   width: 100%;
+  color: black;
 }
 
 /* 
@@ -16,12 +17,10 @@
   align-self: center;
   height: 500%;
   width: 5px;
-  color: black;
 }
 
 .custom-gutter-horizontal:hover {
   color: white;
-
 }
 
 .custom-dragger-horizontal {
