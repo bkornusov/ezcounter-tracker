@@ -3,9 +3,8 @@ import React, { useState, useEffect } from "react";
 import hp from "../../public/icons/hp.png";
 import ac from "../../public/icons/ac.png";
 
-export default function Creature(data, { updateInitiative }) {
-  const creature = data.data;
-  const [initiative, setInitiative] = useState(creature.initiative);
+export default function Creature({ data, updateInitiative }) {
+  const [initiative, setInitiative] = useState(data.initiative);
   const [isEditing, setIsEditing] = useState(false);
 
   function handleChange(e) {
@@ -14,7 +13,18 @@ export default function Creature(data, { updateInitiative }) {
     } else {
       setInitiative(e.target.value);
     }
-    updateInitiative();
+  }
+
+  function handleBlur() {
+    setIsEditing(false);
+    updateInitiative(data.name, initiative);
+  }
+
+  function handleKeyPress(e) {
+    if (e.key === "Enter") {
+      setIsEditing(false);
+      updateInitiative(data.name, initiative);
+    }
   }
 
   return (
@@ -26,12 +36,9 @@ export default function Creature(data, { updateInitiative }) {
           min="-99"
           max="99"
           autoFocus
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          onBlur={() => {
-            setIsEditing(false);
-          }}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onKeyDown={(e) => handleKeyPress(e)}
           value={initiative}
         />
       ) : (
@@ -45,9 +52,9 @@ export default function Creature(data, { updateInitiative }) {
         </span>
       )}
 
-      <span>{creature.name}</span>
-      <span style={{ backgroundImage: `url(${hp})` }}>{creature.hp}</span>
-      <span style={{ backgroundImage: `url(${ac})` }}>{creature.ac}</span>
+      <span className="creature-name">{data.name}</span>
+      <span style={{ backgroundImage: `url(${hp})` }}>{data.hp}</span>
+      <span style={{ backgroundImage: `url(${ac})` }}>{data.ac}</span>
     </div>
   );
 }

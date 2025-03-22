@@ -18,6 +18,10 @@
   background-size: contain;
 }
 
+.creature-name {
+  width: auto;
+}
+
 .stat-value-input {
   color: black;
   background: white;
