@@ -13,6 +13,12 @@
       "initiative": 15,
       "hp": 30,
       "ac": 15
+    },
+    {
+      "name": "Jack",
+      "initiative": 24,
+      "hp": 5,
+      "ac": 12
     }
   ]
 }

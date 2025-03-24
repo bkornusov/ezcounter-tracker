@@ -10,7 +10,7 @@ export default function Initiative() {
   const [creatureList, setCreatureList] = useState(
     encounter.creatures.sort(sortByInitiative)
   );
-  const [currentInitiative, setCurrentInitiative] = useState(0);
+  const [currentTurn, setCurrentTurn] = useState(creatureList[0].name);
   const [round, setRound] = useState(1);
 
   const handleInitiativeChange = (name, newInitiative) => {
@@ -27,6 +27,11 @@ export default function Initiative() {
   return (
     <div className="initiative-panel" style={{ background: "beige" }}>
       <h2>{encounter.name}</h2>
+      <div>
+        <span>
+          Round: {round} | Turn: {currentTurn}
+        </span>
+      </div>
       <button>Next</button>
       <button>New Round</button>
       {creatureList.map((creature) => {
@@ -34,6 +39,7 @@ export default function Initiative() {
           <Creature
             className="creature-active"
             data={creature}
+            isActive={creature.name === currentTurn}
             updateInitiative={handleInitiativeChange}
             key={creature.name}
           />
