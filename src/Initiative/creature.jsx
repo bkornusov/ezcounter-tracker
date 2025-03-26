@@ -1,7 +1,7 @@
 import "./initiative.css";
 import React, { useState, useEffect } from "react";
-import hp from "../../public/icons/hp.png";
-import ac from "../../public/icons/ac.png";
+import hp from "/icons/hp.png?url";
+import ac from "/icons/ac.png?url";
 
 export default function Creature({ isActive, data, updateInitiative }) {
   const [initiative, setInitiative] = useState(data.initiative);
@@ -10,6 +10,8 @@ export default function Creature({ isActive, data, updateInitiative }) {
   function handleChange(e) {
     if (e.target.value > 99) {
       setInitiative(99);
+    } else if (e.target.value < -99) {
+      setInitiative(-99);
     } else {
       setInitiative(e.target.value);
     }
@@ -30,28 +32,30 @@ export default function Creature({ isActive, data, updateInitiative }) {
   function displayCreatureStats() {
     return (
       <div className="creature-entry">
-        {isEditing ? (
-          <input
-            className="stat-value-input"
-            type="number"
-            min="-99"
-            max="99"
-            autoFocus
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onKeyDown={(e) => handleKeyPress(e)}
-            value={initiative}
-          />
-        ) : (
-          <span
-            className="stat-value"
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          >
-            {initiative}
-          </span>
-        )}
+        <div className="initiative-field">
+          {isEditing ? (
+            <input
+              className="stat-value-input"
+              type="number"
+              min="-99"
+              max="99"
+              autoFocus
+              onChange={handleChange}
+              onBlur={handleBlur}
+              onKeyDown={(e) => handleKeyPress(e)}
+              value={initiative}
+            />
+          ) : (
+            <span
+              className="stat-value"
+              onClick={() => {
+                setIsEditing(true);
+              }}
+            >
+              {initiative}
+            </span>
+          )}
+        </div>
 
         <span className="creature-name">{data.name}</span>
         <span style={{ backgroundImage: `url(${hp})` }}>{data.hp}</span>

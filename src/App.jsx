@@ -13,8 +13,8 @@ function App() {
     <>
       <ReactSplit
         SplitDirection={SplitDirection.Horizontal}
-        minWidths={[200, 400]}
-        initialSizes={[35, 65]}
+        minWidths={[350, 600]}
+        initialSizes={[40, 60]}
         gutterClassName="custom-gutter-horizontal"
         draggerClassName="custom-dragger-horizontal"
       >

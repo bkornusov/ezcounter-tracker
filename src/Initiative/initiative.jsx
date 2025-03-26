@@ -48,17 +48,22 @@ export default function Initiative() {
       </div>
       <button onClick={nextTurn}>Next</button>
       <button onClick={nextRound}>New Round</button>
-      {creatureList.map((creature) => {
-        return (
-          <Creature
-            className="creature-active"
-            data={creature}
-            isActive={creature.id === currentTurn[1]}
-            updateInitiative={handleInitiativeChange}
-            key={creature.name}
-          />
-        );
-      })}
+      <div className="creature-list">
+        {creatureList.map((creature) => {
+          return (
+            <Creature
+              className="creature-active"
+              data={creature}
+              isActive={creature.id === currentTurn[1]}
+              updateInitiative={handleInitiativeChange}
+              key={creature.name}
+            />
+          );
+        })}
+      </div>
+      <div className="initiative-footer">
+        <span>Footer</span>
+      </div>
     </div>
   );
 }
