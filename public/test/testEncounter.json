@@ -3,18 +3,21 @@
   "date": "2025-03-17",
   "creatures": [
     {
+      "id": "1234",
       "name": "test",
       "initiative": 10,
       "hp": 30,
       "ac": 15
     },
     {
+      "id": "5678",
       "name": "test2",
       "initiative": 15,
       "hp": 30,
       "ac": 15
     },
     {
+      "id": "420",
       "name": "Jack",
       "initiative": 24,
       "hp": 5,
