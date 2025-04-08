@@ -56,10 +56,18 @@ export default function Creature({ isActive, data, updateInitiative }) {
             </span>
           )}
         </div>
-
         <span className="creature-name">{data.name}</span>
-        <span style={{ backgroundImage: `url(${hp})` }}>{data.hp}</span>
-        <span style={{ backgroundImage: `url(${ac})` }}>{data.ac}</span>
+        <div className="status-field">
+          <div className="actions">
+            <button className="action-button">A</button>
+            <button className="bonus-action-button">BA</button>
+            <button className="reaction-button">R</button>
+          </div>
+          <button className="concentration">C</button>
+          <span style={{ backgroundImage: `url(${hp})` }}>{data.hp}</span>
+          <span style={{ backgroundImage: `url(${ac})` }}>{data.ac}</span>
+          <span>{data.speed}</span>
+        </div>
       </div>
     );
   }

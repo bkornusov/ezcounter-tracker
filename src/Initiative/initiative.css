@@ -1,8 +1,8 @@
 .creature-list {
   align-items: center;
+  height: 50vh;
   overflow-y: auto;
   width: 100%;
-  height: 100%;
 }
 
 .creature-entry {
@@ -18,22 +18,65 @@
 .creature-entry * {
   overflow: hidden;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 1.25em;
   display: inline-block;
-  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .creature-active {
+  transition-duration: 0.25s;
+  animation-duration: 0.25s;
   background-color: rgb(134, 186, 134);
 }
 
 .initiative-field {
   display: flex;
-  justify-content: center;
+  margin-right: 0.25em;
+  justify-content: end;
+  width: 15%;
+  max-width: 20%;
+}
+
+.creature-name {
   width: 20%;
-  max-width: 25%;
+}
+
+.status-field {
+  display: grid;
+  vertical-align: middle;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 0.5em;
+  width: 65%;
+}
+
+.actions {
+  vertical-align: middle;
+  align-items: center;
+}
+
+.actions button {
+  font-size: small;
+  padding: 0;
+  background-color: gray;
+  border: solid 2px black;
+  margin: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 0;
+}
+
+.concentration {
+
+  padding: 0;
+  background-color: gray;
+  border: solid 1px white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
 }
 
 .stat-value {
@@ -54,8 +97,8 @@
 }
 
 .initiative-footer {
-  border: 2px solid;
-  width: inherit;
+  border-top: 2px solid;
+  width: initial;
   margin-top: auto;
   position: fixed;
   bottom: 0;
