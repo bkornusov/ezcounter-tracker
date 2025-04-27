@@ -11,9 +11,10 @@
       "hp": 30,
       "ac": 15,
       "speed": 30,
-      "action": "true",
-      "bonusAction": "true",
-      "reaction": "true"
+      "action": true,
+      "bonusAction": true,
+      "reaction": false,
+      "concentration": false
     },
     {
       "id": "5678",
@@ -22,9 +23,10 @@
       "hp": 30,
       "ac": 15,
       "speed": 30,
-      "action": "true",
-      "bonusAction": "true",
-      "reaction": "true"
+      "action": true,
+      "bonusAction": true,
+      "reaction": true,
+      "concentration": false
     },
     {
       "id": "420",
@@ -33,9 +35,10 @@
       "hp": 5,
       "ac": 12,
       "speed": 30,
-      "action": "true",
-      "bonusAction": "true",
-      "reaction": "true"
+      "action": true,
+      "bonusAction": false,
+      "reaction": true,
+      "concentration": false
     }
   ]
 }

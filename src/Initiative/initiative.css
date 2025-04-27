@@ -59,6 +59,7 @@
 
 .actions button {
   font-size: small;
+  color: black;
   padding: 0;
   background-color: gray;
   border: solid 2px black;
@@ -68,9 +69,14 @@
   border-radius: 0;
 }
 
-.concentration {
+.active-button {
+  background-color: rgb(125, 219, 245) !important;
+}
 
+.concentration {
+  color: black;
   padding: 0;
+  line-height: 20px;
   background-color: gray;
   border: solid 1px white;
   border-radius: 50%;

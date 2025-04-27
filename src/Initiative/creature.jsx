@@ -1,11 +1,22 @@
 import "./initiative.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, act } from "react";
 import hp from "/icons/hp.png?url";
 import ac from "/icons/ac.png?url";
 
 export default function Creature({ isActive, data, updateInitiative }) {
   const [initiative, setInitiative] = useState(data.initiative);
+  const [action, setAction] = useState(data.action);
+  const [bonusAction, setBonusAction] = useState(data.bonusAction);
+  const [reaction, setReaction] = useState(data.reaction);
+  const [concentration, setConcentration] = useState(data.concentration);
   const [isEditing, setIsEditing] = useState(false);
+
+  console.log(action, bonusAction, reaction, concentration);
+
+  function handleSave() {
+    // todo
+    // save the current state of the creature
+  }
 
   function handleChange(e) {
     if (e.target.value > 99) {
@@ -27,6 +38,40 @@ export default function Creature({ isActive, data, updateInitiative }) {
       setIsEditing(false);
       updateInitiative(data.name, initiative);
     }
+  }
+
+  function handleToggleAction(buttonClass) {
+    if (buttonClass === "action-button") {
+      setAction(!action);
+    } else if (buttonClass === "bonus-action-button") {
+      setBonusAction(!bonusAction);
+    } else if (buttonClass === "reaction-button") {
+      setReaction(!reaction);
+    } else if (buttonClass === "concentration") {
+      setConcentration(!concentration);
+    }
+  }
+
+  function renderButton(buttonClass, active) {
+    return active ? (
+      <button
+        className={`${buttonClass} active-button`}
+        onClick={() => {
+          handleToggleAction(buttonClass);
+        }}
+      >
+        {buttonClass.slice(0, 1).toUpperCase()}
+      </button>
+    ) : (
+      <button
+        className={buttonClass}
+        onClick={() => {
+          handleToggleAction(buttonClass);
+        }}
+      >
+        {buttonClass.slice(0, 1).toUpperCase()}
+      </button>
+    );
   }
 
   function displayCreatureStats() {
@@ -59,11 +104,11 @@ export default function Creature({ isActive, data, updateInitiative }) {
         <span className="creature-name">{data.name}</span>
         <div className="status-field">
           <div className="actions">
-            <button className="action-button">A</button>
-            <button className="bonus-action-button">BA</button>
-            <button className="reaction-button">R</button>
+            {renderButton("action-button", action)}
+            {renderButton("bonus-action-button", bonusAction)}
+            {renderButton("reaction-button", reaction)}
           </div>
-          <button className="concentration">C</button>
+          {renderButton("concentration", concentration)}
           <span style={{ backgroundImage: `url(${hp})` }}>{data.hp}</span>
           <span style={{ backgroundImage: `url(${ac})` }}>{data.ac}</span>
           <span>{data.speed}</span>
