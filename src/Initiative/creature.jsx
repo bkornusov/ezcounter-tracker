@@ -11,8 +11,6 @@ export default function Creature({ isActive, data, updateInitiative }) {
   const [concentration, setConcentration] = useState(data.concentration);
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log(action, bonusAction, reaction, concentration);
-
   function handleSave() {
     // todo
     // save the current state of the creature

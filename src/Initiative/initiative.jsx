@@ -1,12 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import encounter from "../../public/test/testEncounter.json";
+import { readTextFile, writeFile } from "@tauri-apps/plugin-fs";
+import { resolveResource } from "@tauri-apps/api/path";
 import Creature from "./creature";
 import "./initiative.css";
 
 export default function Initiative() {
-  const sortByInitiative = (a, b) => {
-    return b.initiative - a.initiative;
+  const handleOpen = async () => {
+    try {
+      // Open a file selection dialog
+      const selected = await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Text",
+            extensions: ["json"],
+          },
+        ],
+      });
+
+      if (selected) {
+        // Read the file content using our Rust command
+        const fileContent = await invoke("open_file", {
+          path: selected,
+        });
+        setContent(fileContent);
+        console.log("File opened successfully!");
+      }
+    } catch (error) {
+      console.error("Error opening file:", error);
+    }
   };
+
+  const sortByInitiative = (a, b) => b.initiative - a.initiative;
+
   const [creatureList, setCreatureList] = useState(
     encounter.creatures.sort(sortByInitiative)
   );

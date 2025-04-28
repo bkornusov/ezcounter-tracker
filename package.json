@@ -1,17 +1,20 @@
 {
   "name": "ezcounter-tracker-tauri",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "tauri": "tauri",
     "preview": "vite preview"
   },
   "dependencies": {
     "@devbookhq/splitter": "^1.4.2",
+    "@tauri-apps/api": "^2.5.0",
     "@tauri-apps/cli": "^2.3.1",
+    "@tauri-apps/plugin-fs": "^2.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
