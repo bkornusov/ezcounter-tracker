@@ -1,11 +1,48 @@
 import React, { useEffect, useState } from "react";
-import encounter from "../../public/test/testEncounter.json";
+// import encounter from "../../public/test/testEncounter.json";
 import { readTextFile, writeFile } from "@tauri-apps/plugin-fs";
 import { resolveResource } from "@tauri-apps/api/path";
+import { open, save } from "@tauri-apps/plugin-dialog";
+import { invoke } from "@tauri-apps/api/core";
 import Creature from "./creature";
 import "./initiative.css";
 
 export default function Initiative() {
+  const [encounter, setEncounter] = useState({
+    name: "",
+    date: "",
+    round: 0,
+    turn: 0,
+    creatures: [
+      {
+        id: "0",
+        name: "",
+        initiative: 0,
+        hp: 0,
+        ac: 0,
+        speed: 0,
+        action: true,
+        bonusAction: true,
+        reaction: false,
+        concentration: false,
+      },
+    ],
+  });
+
+  const [creatureList, setCreatureList] = useState([]);
+  const [currentTurn, setCurrentTurn] = useState([0, null]);
+  const [round, setRound] = useState(1);
+
+  // Update dependent states when `encounter` changes
+  useEffect(() => {
+    const sortedCreatures = (encounter.creatures || []).sort(
+      (a, b) => b.initiative - a.initiative
+    );
+    setCreatureList(sortedCreatures);
+    setCurrentTurn([0, sortedCreatures[0]?.id || null]);
+    setRound(encounter.round || 1);
+  }, [encounter]);
+
   const handleOpen = async () => {
     try {
       // Open a file selection dialog
@@ -24,7 +61,9 @@ export default function Initiative() {
         const fileContent = await invoke("open_file", {
           path: selected,
         });
-        setContent(fileContent);
+        console.log(fileContent);
+        setEncounter(JSON.parse(fileContent));
+        console.log(encounter);
         console.log("File opened successfully!");
       }
     } catch (error) {
@@ -32,13 +71,39 @@ export default function Initiative() {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      // Open a file selection dialog
+      const selected = await save({
+        defaultPath: "encounter.json",
+        filters: [
+          {
+            name: "json",
+            extensions: ["json"],
+          },
+        ],
+      });
+
+      if (selected) {
+        // Write the file content using our Rust command
+        await invoke("save_file", {
+          path: selected,
+          content: JSON.stringify(encounter, null, 2),
+        });
+        console.log("File saved successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving file:", error);
+    }
+  };
+
   const sortByInitiative = (a, b) => b.initiative - a.initiative;
 
-  const [creatureList, setCreatureList] = useState(
-    encounter.creatures.sort(sortByInitiative)
-  );
-  const [currentTurn, setCurrentTurn] = useState([0, creatureList[0].id]);
-  const [round, setRound] = useState(1);
+  // const [creatureList, setCreatureList] = useState(
+  //   encounter.creatures.sort(sortByInitiative)
+  // );
+  // const [currentTurn, setCurrentTurn] = useState([0, creatureList[0].id]);
+  // const [round, setRound] = useState(1);
 
   const handleInitiativeChange = (name, newInitiative) => {
     console.log("initiative changed");
@@ -66,11 +131,16 @@ export default function Initiative() {
 
   return (
     <div className="initiative-panel" style={{ background: "beige" }}>
-      <h2>{encounter.name}</h2>
+      <div className="header-menu">
+        <h2>{encounter.name}</h2>
+        <button onClick={handleOpen}>Open</button>
+        <button onClick={handleSave}>Save</button>
+      </div>
       <div>
         <span>
-          Round: {round} | Turn:{" "}
-          {creatureList.find((creature) => currentTurn[1] === creature.id).name}
+          Round: {round || 0} | Turn:{" "}
+          {creatureList.find((creature) => currentTurn[1] === creature.id)
+            ?.name || ""}
         </span>
       </div>
       <button onClick={nextTurn}>Next</button>
