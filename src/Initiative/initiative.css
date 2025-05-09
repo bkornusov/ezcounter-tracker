@@ -37,6 +37,15 @@
   background-color: rgb(134, 186, 134);
 }
 
+.delete-button {
+  font-size: small;
+  padding: 0;
+  margin: 0;
+  width: 25px;
+  height: 25px;
+  font-size: 0.5em;
+}
+
 .initiative-field {
   display: flex;
   margin-right: 0.25em;

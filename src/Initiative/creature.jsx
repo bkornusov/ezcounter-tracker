@@ -3,7 +3,12 @@ import React, { useState, useEffect, act } from "react";
 import hp from "/icons/hp.png?url";
 import ac from "/icons/ac.png?url";
 
-export default function Creature({ isActive, data, updateCreature }) {
+export default function Creature({
+  isActive,
+  data,
+  updateCreature,
+  deleteCreature,
+}) {
   const [initiative, setInitiative] = useState(data.initiative);
   const [action, setAction] = useState(data.action);
   const [bonusAction, setBonusAction] = useState(data.bonusAction);
@@ -11,9 +16,11 @@ export default function Creature({ isActive, data, updateCreature }) {
   const [concentration, setConcentration] = useState(data.concentration);
   const [isEditing, setIsEditing] = useState(false);
 
-  function handleSave() {
-    // todo
-    // save the current state of the creature
+  function handleDelete() {
+    // Handle the delete action here
+    // For example, you might want to remove this creature from the list
+    // You can call a function passed as a prop to delete the creature
+    deleteCreature(data.id);
   }
 
   function handleChange(e) {
@@ -84,6 +91,11 @@ export default function Creature({ isActive, data, updateCreature }) {
   function displayCreatureStats() {
     return (
       <div className="creature-entry">
+        <div className="delete-button">
+          <button className="delete" onClick={handleDelete}>
+            X
+          </button>
+        </div>
         <div className="initiative-field">
           {isEditing ? (
             <input

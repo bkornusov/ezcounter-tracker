@@ -12,9 +12,9 @@
       "ac": 12,
       "speed": 30,
       "action": true,
-      "bonusAction": true,
+      "bonusAction": false,
       "reaction": false,
-      "concentration": false,
+      "concentration": true,
       "action-button": true
     },
     {
@@ -25,9 +25,9 @@
       "ac": 15,
       "speed": 30,
       "action": true,
-      "bonusAction": false,
-      "reaction": false,
-      "concentration": false
+      "bonusAction": true,
+      "reaction": true,
+      "concentration": true
     },
     {
       "id": "1234",
