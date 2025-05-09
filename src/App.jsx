@@ -9,6 +9,12 @@ import Sheet from "./Sheet/sheet";
 function App() {
   const [count, setCount] = useState(0);
 
+  document.onkeydown = function (e) {
+    if (e.key === 116) {
+      return false;
+    }
+  };
+
   return (
     <>
       <ReactSplit

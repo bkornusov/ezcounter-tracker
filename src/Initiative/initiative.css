@@ -1,3 +1,10 @@
+.header-menu {
+  margin: 1em;
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: space-between;
+}
+
 .creature-list {
   align-items: center;
   height: 50vh;

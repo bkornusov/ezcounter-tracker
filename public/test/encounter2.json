@@ -7,15 +7,14 @@
     {
       "id": "420",
       "name": "Jack",
-      "initiative": "25",
+      "initiative": 24,
       "hp": 5,
       "ac": 12,
       "speed": 30,
       "action": true,
-      "bonusAction": true,
-      "reaction": false,
-      "concentration": false,
-      "action-button": true
+      "bonusAction": false,
+      "reaction": true,
+      "concentration": false
     },
     {
       "id": "5678",
@@ -25,8 +24,8 @@
       "ac": 15,
       "speed": 30,
       "action": true,
-      "bonusAction": false,
-      "reaction": false,
+      "bonusAction": true,
+      "reaction": true,
       "concentration": false
     },
     {
