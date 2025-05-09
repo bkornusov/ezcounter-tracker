@@ -3,7 +3,7 @@ import React, { useState, useEffect, act } from "react";
 import hp from "/icons/hp.png?url";
 import ac from "/icons/ac.png?url";
 
-export default function Creature({ isActive, data, updateInitiative }) {
+export default function Creature({ isActive, data, updateCreature }) {
   const [initiative, setInitiative] = useState(data.initiative);
   const [action, setAction] = useState(data.action);
   const [bonusAction, setBonusAction] = useState(data.bonusAction);
@@ -24,30 +24,39 @@ export default function Creature({ isActive, data, updateInitiative }) {
     } else {
       setInitiative(e.target.value);
     }
+    setInitiative(e.target.value);
+    updateCreature({ ...data, initiative: e.target.value });
   }
 
   function handleBlur() {
     setIsEditing(false);
-    updateInitiative(data.name, initiative);
+    handleChange(data.name, initiative);
   }
 
   function handleKeyPress(e) {
     if (e.key === "Enter") {
       setIsEditing(false);
-      updateInitiative(data.name, initiative);
+      handleChange(data.name, initiative);
     }
   }
 
   function handleToggleAction(buttonClass) {
+    let jsonEntry = "";
     if (buttonClass === "action-button") {
+      jsonEntry = "action";
       setAction(!action);
     } else if (buttonClass === "bonus-action-button") {
+      jsonEntry = "bonusAction";
       setBonusAction(!bonusAction);
     } else if (buttonClass === "reaction-button") {
+      jsonEntry = "reaction";
       setReaction(!reaction);
     } else if (buttonClass === "concentration") {
+      jsonEntry = "concentration";
       setConcentration(!concentration);
     }
+    let updatedCreature = { ...data, [jsonEntry]: !data[jsonEntry] };
+    updateCreature(updatedCreature);
   }
 
   function renderButton(buttonClass, active) {

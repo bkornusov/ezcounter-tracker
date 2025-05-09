@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 // import encounter from "../../public/test/testEncounter.json";
-import { readTextFile, writeFile } from "@tauri-apps/plugin-fs";
-import { resolveResource } from "@tauri-apps/api/path";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { invoke } from "@tauri-apps/api/core";
 import Creature from "./creature";
@@ -105,15 +103,41 @@ export default function Initiative() {
   // const [currentTurn, setCurrentTurn] = useState([0, creatureList[0].id]);
   // const [round, setRound] = useState(1);
 
-  const handleInitiativeChange = (name, newInitiative) => {
-    console.log("initiative changed");
+  // const handleInitiativeChange = (name, newInitiative) => {
+  //   console.log("initiative changed");
+  //   const updatedList = creatureList.map((creature) =>
+  //     creature.name === name
+  //       ? { ...creature, initiative: newInitiative }
+  //       : creature
+  //   );
+  //   const sortedList = updatedList.sort(sortByInitiative);
+  //   setCreatureList(sortedList);
+  // };
+
+  const handleCreatureUpdate = (updatedCreature) => {
+    // Update the creature in the list
     const updatedList = creatureList.map((creature) =>
-      creature.name === name
-        ? { ...creature, initiative: newInitiative }
-        : creature
+      creature.id === updatedCreature.id ? updatedCreature : creature
     );
-    const sortedList = updatedList.sort(sortByInitiative);
+
+    // Sort the updated list by initiative
+    const sortedList = updatedList.sort((a, b) => b.initiative - a.initiative);
+
+    // Update the global state
     setCreatureList(sortedList);
+    setEncounter((prev) => ({
+      ...prev,
+      creatures: sortedList,
+    }));
+    // Update the current turn if necessary
+    if (currentTurn[1] === updatedCreature.id) {
+      setCurrentTurn([0, sortedList[0].id]);
+    }
+    // Update the round if necessary
+    if (currentTurn[0] >= sortedList.length) {
+      setRound((prev) => prev + 1);
+      setCurrentTurn([0, sortedList[0].id]);
+    }
   };
 
   const nextRound = () => {
@@ -152,7 +176,7 @@ export default function Initiative() {
               className="creature-active"
               data={creature}
               isActive={creature.id === currentTurn[1]}
-              updateInitiative={handleInitiativeChange}
+              updateCreature={handleCreatureUpdate}
               key={creature.name}
             />
           );
