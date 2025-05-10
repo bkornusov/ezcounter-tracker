@@ -1,4 +1,4 @@
-import "./initiative.css";
+import "./creature.css";
 import React, { useState, useEffect, act } from "react";
 import hp from "/icons/hp.png?url";
 import ac from "/icons/ac.png?url";
@@ -91,11 +91,6 @@ export default function Creature({
   function displayCreatureStats() {
     return (
       <div className="creature-entry">
-        <div className="delete-button">
-          <button className="delete" onClick={handleDelete}>
-            X
-          </button>
-        </div>
         <div className="initiative-field">
           {isEditing ? (
             <input
@@ -132,6 +127,9 @@ export default function Creature({
           <span style={{ backgroundImage: `url(${ac})` }}>{data.ac}</span>
           <span>{data.speed}</span>
         </div>
+        <button className="delete-button" onClick={handleDelete}>
+          X
+        </button>
       </div>
     );
   }

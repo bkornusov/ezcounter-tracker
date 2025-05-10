@@ -12,8 +12,8 @@
       "ac": 12,
       "speed": 30,
       "action": true,
-      "bonusAction": false,
-      "reaction": false,
+      "bonusAction": true,
+      "reaction": true,
       "concentration": true,
       "action-button": true
     },
