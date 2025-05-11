@@ -1,40 +1,34 @@
 import React, { useState } from "react";
-// import encounter from "../../public/test/testEncounter.json";
-import { open, save } from "@tauri-apps/plugin-dialog";
-import { invoke } from "@tauri-apps/api/core";
 import Creature from "./creature";
 import "./initiative.css";
 
-export default function Initiative(encounter) {
-  const [currentTurn, setCurrentTurn] = useState([0, null]);
-  const [round, setRound] = useState(1);
-
+export default function Initiative({
+  encounter,
+  updateCreature,
+  deleteCreature,
+  createCreature,
+  incrementTurn,
+  incrementRound,
+}) {
   return (
     <div className="initiative-panel" style={{ background: "beige" }}>
-      <div className="header-menu">
-        <h2>{encounter.name}</h2>
-        <button onClick={handleOpen}>Open</button>
-        <button onClick={handleSave}>Save</button>
-      </div>
+      <div className="header-menu"></div>
       <div>
         <span>
-          Round: {round || 0} | Turn:{" "}
-          {encounter.creatures.find(
-            (creature) => currentTurn[1] === creature.id
-          )?.name || ""}
+          Round: {encounter.round || 0} | Turn: {encounter.turn[0] || 0}
         </span>
       </div>
-      <button onClick={nextTurn}>Next</button>
-      <button onClick={nextRound}>New Round</button>
+      <button onClick={incrementTurn}>Next</button>
+      <button onClick={incrementRound}>New Round</button>
       <div className="creature-list">
         {encounter.creatures.map((creature) => {
           return (
             <Creature
               className="creature-active"
               data={creature}
-              isActive={creature.id === currentTurn[1]}
-              updateCreature={handleCreatureUpdate}
-              deleteCreature={handleCreatureDelete}
+              isActive={creature.initiative === encounter.turn}
+              updateCreature={updateCreature}
+              deleteCreature={deleteCreature}
               key={creature.name}
             />
           );
@@ -42,6 +36,7 @@ export default function Initiative(encounter) {
       </div>
       <div className="initiative-footer">
         <span>Footer</span>
+        <button onClick={createCreature}>Add Creature</button>
       </div>
     </div>
   );

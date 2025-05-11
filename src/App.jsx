@@ -5,11 +5,14 @@ import "./App.css";
 import ReactSplit, { SplitDirection } from "@devbookhq/splitter";
 import Initiative from "./Initiative/initiative";
 import Sheet from "./Sheet/sheet";
+import { open, save } from "@tauri-apps/plugin-dialog";
+import { invoke } from "@tauri-apps/api/core";
 import emptyEncounter from "./util/emptyEncounter.js";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [encounter, setEncounter] = useState(emptyEncounter);
+  // const [currentTurn, setCurrentTurn] = useState([0, null]);
+  const [round, setRound] = useState(1);
 
   // document.onkeydown = function (e) {
   //   if (e.key === "F5") {
@@ -22,9 +25,17 @@ function App() {
     const sortedCreatures = (encounter.creatures || []).sort(
       (a, b) => b.initiative - a.initiative
     );
+    const initiatives = [
+      ...new Set(encounter.creatures.map((creature) => creature.initiative)),
+    ];
     // setEncounter({ ...encounter, creatures: sortedCreatures });
-    setCurrentTurn([0, sortedCreatures[0]?.id || null]);
-    setRound(encounter.round || 1);
+    // setEncounter({
+    //   ...encounter,
+    //   creatures: sortedCreatures,
+    //   initiatives,
+    //   turn: initiatives[0],
+    // });
+    // setRound(encounter.round || 1);
   }, [encounter]);
 
   const handleOpen = async () => {
@@ -97,12 +108,12 @@ function App() {
     }));
     // Update the current turn if necessary
     if (currentTurn[1] === updatedCreature.id) {
-      setCurrentTurn([0, sortedList[0].id]);
+      setEncounter(...encounter, [0, sortedList[0].id]);
     }
     // Update the round if necessary
     if (currentTurn[0] >= sortedList.length) {
       setRound((prev) => prev + 1);
-      setCurrentTurn([0, sortedList[0].id]);
+      setEncounter(...encounter, [0, sortedList[0].id]);
     }
   };
 
@@ -122,32 +133,38 @@ function App() {
     }));
     // Update the current turn if necessary
     if (currentTurn[1] === id) {
-      setCurrentTurn([0, sortedList[0]?.id || null]);
+      setEncounter(...encounter, [0, sortedList[0]?.id || null]);
     }
   };
 
+  const handleCreatureCreate = () => {};
+
   const nextRound = () => {
-    setRound(round + 1);
-    setCurrentTurn([0, encounter.creatures[0].id]);
+    setEncounter((prev) => ({
+      ...prev,
+      round: prev.round ? prev.round + 1 : 1,
+    }));
+    setEncounter(...encounter, [0, encounter.creatures[0].id]);
   };
 
   const nextTurn = () => {
-    if (currentTurn[0] === encounter.creatures.length - 1) {
-      nextRound();
-      return;
-    }
-    setCurrentTurn([
-      currentTurn[0] + 1,
-      encounter.creatures[currentTurn[0] + 1].id,
-    ]);
+    // if (currentTurn[0] === encounter.creatures.length - 1) {
+    //   nextRound();
+    //   return;
+    // }
+    // setCurrentTurn([
+    //   currentTurn[0] + 1,
+    //   encounter.creatures[currentTurn[0] + 1].id,
+    // ]);
   };
 
   return (
     <>
       <div className="header-menu">
-        <h3>DnD Initiative Tracker</h3>
+        <h3>{encounter.name}</h3>
+        <button onClick={handleOpen}>Open</button>
+        <button onClick={handleSave}>Save</button>
       </div>
-
       <ReactSplit
         SplitDirection={SplitDirection.Horizontal}
         minWidths={[350, 600]}
@@ -155,7 +172,14 @@ function App() {
         gutterClassName="custom-gutter-horizontal"
         draggerClassName="custom-dragger-horizontal"
       >
-        <Initiative encounter={encounter} />
+        <Initiative
+          encounter={encounter}
+          updateCreature={handleCreatureUpdate}
+          deleteCreature={handleCreatureDelete}
+          creatreCreature={handleCreatureCreate}
+          incrementTurn={nextTurn}
+          incrementRound={nextRound}
+        />
         <Sheet />
       </ReactSplit>
     </>
