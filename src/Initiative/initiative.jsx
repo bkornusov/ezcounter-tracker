@@ -24,7 +24,9 @@ export default function Initiative({
         {encounter.creatures.map((creature) => {
           return (
             <Creature
-              className="creature-active"
+              className={`creature ${
+                creature.initiative === encounter.turn ? "creature-active" : ""
+              }`}
               data={creature}
               isActive={creature.initiative === encounter.turn}
               updateCreature={updateCreature}
