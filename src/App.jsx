@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import ReactSplit, { SplitDirection } from "@devbookhq/splitter";
 import Initiative from "./Initiative/initiative";
@@ -8,6 +6,7 @@ import Sheet from "./Sheet/sheet";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { invoke } from "@tauri-apps/api/core";
 import emptyEncounter from "./util/emptyEncounter.js";
+import emptyCreature from "./util/emptyCreature.js";
 
 function App() {
   const [encounter, setEncounter] = useState(emptyEncounter);
@@ -137,7 +136,27 @@ function App() {
     }
   };
 
-  const handleCreatureCreate = () => {};
+  const handleCreatureCreate = (creatureId) => {
+    let newCreature;
+    let newId = Math.max(...encounter.creatures.map((c) => c.id)) + 1;
+    if (creatureId) {
+      newCreature = encounter.creatures.find(
+        (creature) => creature.id === creatureId
+      );
+    } else {
+      newCreature = emptyCreature;
+    }
+    newCreature.id = newId;
+    setEncounter((prev) => ({
+      ...prev,
+      creatures: [...prev.creatures, newCreature],
+    }));
+
+    console.log(
+      "List of creature Ids: ",
+      encounter.creatures.map((c) => c.id)
+    );
+  };
 
   const nextRound = () => {
     setEncounter((prev) => ({
@@ -167,7 +186,7 @@ function App() {
       </div>
       <ReactSplit
         SplitDirection={SplitDirection.Horizontal}
-        minWidths={[350, 600]}
+        minWidths={[400, 400]}
         initialSizes={[40, 60]}
         gutterClassName="custom-gutter-horizontal"
         draggerClassName="custom-dragger-horizontal"
@@ -176,7 +195,7 @@ function App() {
           encounter={encounter}
           updateCreature={handleCreatureUpdate}
           deleteCreature={handleCreatureDelete}
-          creatreCreature={handleCreatureCreate}
+          createCreature={handleCreatureCreate}
           incrementTurn={nextTurn}
           incrementRound={nextRound}
         />

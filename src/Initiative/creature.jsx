@@ -1,13 +1,11 @@
 import "./creature.css";
-import React, { useState, useEffect, act } from "react";
-import hp from "/icons/hp.png?url";
-import ac from "/icons/ac.png?url";
+import { useState, useEffect } from "react";
 
 export default function Creature({
   isActive,
   data,
   updateCreature,
-  deleteCreature,
+  contextMenu,
 }) {
   const [initiative, setInitiative] = useState(data.initiative);
   const [action, setAction] = useState(data.action);
@@ -15,13 +13,6 @@ export default function Creature({
   const [reaction, setReaction] = useState(data.reaction);
   const [concentration, setConcentration] = useState(data.concentration);
   const [isEditing, setIsEditing] = useState(false);
-
-  function handleDelete() {
-    // Handle the delete action here
-    // For example, you might want to remove this creature from the list
-    // You can call a function passed as a prop to delete the creature
-    deleteCreature(data.id);
-  }
 
   function handleChange(e) {
     if (e.target.value > 99) {
@@ -64,15 +55,6 @@ export default function Creature({
     }
     let updatedCreature = { ...data, [jsonEntry]: !data[jsonEntry] };
     updateCreature(updatedCreature);
-  }
-
-  function creatureContextMenu(e) {
-    e.preventDefault();
-    console.log("Right-clicked on creature:", data.name);
-    // You can also use the event object to get the mouse position
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    console.log("Mouse position:", mouseX, mouseY);
   }
 
   function renderButton(buttonClass, active) {
@@ -158,7 +140,7 @@ export default function Creature({
         </div>
         <button
           className="context-menu-button"
-          onClick={creatureContextMenu}
+          onClick={(e) => contextMenu(e, data)}
         ></button>
       </div>
     );

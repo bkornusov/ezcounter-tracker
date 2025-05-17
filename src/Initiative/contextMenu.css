@@ -1,6 +1,43 @@
+.context-menu {
+  position: fixed;
+  width: 100px;
+  background-color: white;
+  border-radius: 5px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+
 .context-menu.active {
   visibility: visible;
   opacity: 1;
   display: flex;
   flex-direction: column;
+}
+
+.context-menu button {
+  background-image: none;
+  border-radius: 0;
+  width: 100%;
+  background-color: transparent;
+  border-bottom: solid 1px gray;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 5px 5px;
+}
+
+.context-menu button:last-child {
+  border-bottom: none;
+}
+
+.context-menu button:hover {
+  background-color: #f0f0f0;
 }
