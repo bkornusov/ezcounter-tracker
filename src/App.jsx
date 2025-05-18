@@ -27,6 +27,11 @@ function App() {
     const initiatives = [
       ...new Set(encounter.creatures.map((creature) => creature.initiative)),
     ];
+    // setEncounter((prev) => ({
+    //   ...prev,
+    //   creatures: sortedCreatures,
+    //   initiatives,
+    // }));
     // setEncounter({ ...encounter, creatures: sortedCreatures });
     // setEncounter({
     //   ...encounter,
@@ -36,6 +41,12 @@ function App() {
     // });
     // setRound(encounter.round || 1);
   }, [encounter]);
+
+  const sortedCreatures = (creatures) => {
+    return (encounter.creatures || []).sort(
+      (a, b) => b.initiative - a.initiative
+    );
+  };
 
   const handleOpen = async () => {
     try {
@@ -55,7 +66,7 @@ function App() {
         const fileContent = await invoke("open_file", {
           path: selected,
         });
-        setEncounter({ ...encounter, creatures: [] });
+        setEncounter({});
         setEncounter(JSON.parse(fileContent));
         console.log(encounter);
         console.log("File opened successfully!");
@@ -118,12 +129,14 @@ function App() {
 
   const handleCreatureDelete = (id) => {
     // Delete the creature from the list
-    const updatedList = encounter.creatures.filter(
-      (creature) => creature.id !== id
-    );
 
     // Sort the updated list by initiative
-    const sortedList = updatedList.sort((a, b) => b.initiative - a.initiative);
+    const sortedList = encounter.creatures
+      .filter((creature) => creature.id !== id)
+      .sort((a, b) => b.initiative - a.initiative);
+    // const newInitiatives = encounter.initiatives.filter(
+    //   (initiative) => initiative !== id
+    // );
 
     // Update the global state
     setEncounter((prev) => ({
@@ -131,30 +144,48 @@ function App() {
       creatures: sortedList,
     }));
     // Update the current turn if necessary
-    if (currentTurn[1] === id) {
-      setEncounter(...encounter, [0, sortedList[0]?.id || null]);
-    }
+    // if (currentTurn[1] === id) {
+    //   setEncounter(...encounter, [0, sortedList[0]?.id || null]);
+    // }
   };
 
   const handleCreatureCreate = (creatureId) => {
+    const maxId = encounter.creatures.length
+      ? Math.max(...encounter.creatures.map((c) => c.id))
+      : 0;
+    const newId = maxId + 1;
+
+    // Clone the creature or use emptyCreature
     let newCreature;
-    let newId = Math.max(...encounter.creatures.map((c) => c.id)) + 1;
     if (creatureId) {
-      newCreature = encounter.creatures.find(
+      const found = encounter.creatures.find(
         (creature) => creature.id === creatureId
       );
+      newCreature = found ? { ...found } : { ...emptyCreature };
     } else {
-      newCreature = emptyCreature;
+      newCreature = { ...emptyCreature };
     }
     newCreature.id = newId;
+
+    // Clone arrays before modifying
+    const newCreatures = [...encounter.creatures, newCreature];
+    const newInitiatives = encounter.initiatives.includes(
+      newCreature.initiative
+    )
+      ? [...encounter.initiatives]
+      : [...encounter.initiatives, newCreature.initiative];
+
     setEncounter((prev) => ({
       ...prev,
-      creatures: [...prev.creatures, newCreature],
+      creatures: newCreatures,
+      initiatives: newInitiatives,
     }));
 
+    console.log("List of creatures: ", newCreatures);
+    console.log("List of initiatives: ", newInitiatives);
     console.log(
       "List of creature Ids: ",
-      encounter.creatures.map((c) => c.id)
+      newCreatures.map((c) => c.id)
     );
   };
 

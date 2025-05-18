@@ -5,7 +5,7 @@
   "turn": 1,
   "creatures": [
     {
-      "id": "420",
+      "id": 420,
       "name": "Jack",
       "initiative": 25,
       "hp": 5,
@@ -17,7 +17,7 @@
       "concentration": true
     },
     {
-      "id": "5678",
+      "id": 5678,
       "name": "test2",
       "initiative": 15,
       "hp": 30,
@@ -29,7 +29,7 @@
       "concentration": true
     },
     {
-      "id": "1234",
+      "id": 1234,
       "name": "test",
       "initiative": 10,
       "hp": 30,

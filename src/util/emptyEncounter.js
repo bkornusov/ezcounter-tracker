@@ -5,7 +5,7 @@ const emptyEncounter = {
   turn: 0,
   creatures: [
     {
-      id: "0",
+      id: 0,
       name: "",
       initiative: 0,
       hp: 0,
@@ -17,5 +17,6 @@ const emptyEncounter = {
       concentration: false,
     },
   ],
+  initiatives: [],
 };
 export default emptyEncounter;
