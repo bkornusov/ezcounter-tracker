@@ -1,0 +1,141 @@
+.creature-entry {
+  display: flex;
+  justify-content: space-between;
+  gap: 0;
+  align-items: center;
+  border: 2px solid;
+  border-radius: 8px;
+  height: 50px;
+  margin: 4px;
+}
+
+.creature-entry * {
+  font-weight: bold;
+  font-size: 1.15em;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.creature-active {
+  transition-duration: 0.25s;
+  animation-duration: 0.25s;
+  background-color: rgb(134, 186, 134);
+}
+
+/* .delete-button {
+  background-color: red;
+  border: none;
+  color: black;
+  font-size: small;
+  width: 25px;
+  height: 50px;
+  font-size: 1em;
+  padding: 0;
+  border-radius: 0px 0.5em 0.5em 0;
+  /* margin-right: 0.5em; */
+/* } */
+
+.initiative-name-field {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 30%;
+}
+
+.initiative {
+  overflow-x: visible;
+}
+
+.creature-name {}
+
+.status-field {
+  display: grid;
+  vertical-align: middle;
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  width: 40%;
+}
+
+.status-field span {
+  background-size: contain;
+  background-color: rgba(255, 255, 255, 0.20);
+  background-blend-mode: lighten;
+  width: 30px;
+}
+
+.actions {
+  width: 25%;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.actions button {
+  font-size: small;
+  color: black;
+  padding: 0;
+  background-color: gray;
+  border: solid 2px black;
+  margin: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 0;
+}
+
+.active-button {
+  background-color: rgb(125, 219, 245) !important;
+}
+
+.concentration {
+  font-size: smaller;
+  text-align: center;
+  color: black;
+  padding: 0;
+  line-height: 20px;
+  background-color: gray;
+  border: solid 1px white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+}
+
+.stat-value {
+  text-align: center;
+}
+
+.stat-value-input {
+  font-family: inherit;
+  padding-right: 20px;
+  height: 80%;
+  width: 95%;
+  text-align: start;
+  color: black;
+  font-style: italic;
+  background: none;
+  outline: none !important;
+  border: none;
+}
+
+.creature-name {
+  width: auto;
+  font-size: 1em;
+}
+
+.context-menu-button {
+  color: inherit;
+  background: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-left: solid 2px black;
+  font-size: small;
+  width: 25px;
+  height: 50px;
+  font-size: 1em;
+  padding: 0;
+  border-radius: 0px 0.5em 0.5em 0;
+  background-image: url('https://www.svgrepo.com/show/345223/three-dots-vertical.svg');
+}

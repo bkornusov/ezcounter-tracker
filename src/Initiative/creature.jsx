@@ -1,13 +1,11 @@
-import "./initiative.css";
-import React, { useState, useEffect, act } from "react";
-import hp from "/icons/hp.png?url";
-import ac from "/icons/ac.png?url";
+import "./creature.css";
+import { useState, useEffect } from "react";
 
 export default function Creature({
   isActive,
   data,
   updateCreature,
-  deleteCreature,
+  contextMenu,
 }) {
   const [initiative, setInitiative] = useState(data.initiative);
   const [action, setAction] = useState(data.action);
@@ -15,13 +13,6 @@ export default function Creature({
   const [reaction, setReaction] = useState(data.reaction);
   const [concentration, setConcentration] = useState(data.concentration);
   const [isEditing, setIsEditing] = useState(false);
-
-  function handleDelete() {
-    // Handle the delete action here
-    // For example, you might want to remove this creature from the list
-    // You can call a function passed as a prop to delete the creature
-    deleteCreature(data.id);
-  }
 
   function handleChange(e) {
     if (e.target.value > 99) {
@@ -32,19 +23,19 @@ export default function Creature({
       setInitiative(e.target.value);
     }
     setInitiative(e.target.value);
-    updateCreature({ ...data, initiative: e.target.value });
   }
 
   function handleBlur() {
     setIsEditing(false);
-    handleChange(data.name, initiative);
+    updateCreature({ ...data, initiative: parseInt(initiative) });
+    console.log("Initiative changed to:", initiative);
   }
 
   function handleKeyPress(e) {
     if (e.key === "Enter") {
       setIsEditing(false);
-      handleChange(data.name, initiative);
     }
+    updateCreature({ ...data, initiative: parseInt(initiative) });
   }
 
   function handleToggleAction(buttonClass) {
@@ -91,47 +82,66 @@ export default function Creature({
   function displayCreatureStats() {
     return (
       <div className="creature-entry">
-        <div className="delete-button">
-          <button className="delete" onClick={handleDelete}>
-            X
-          </button>
-        </div>
-        <div className="initiative-field">
-          {isEditing ? (
-            <input
-              className="stat-value-input"
-              type="number"
-              min="-99"
-              max="99"
-              autoFocus
-              onChange={handleChange}
-              onBlur={handleBlur}
-              onKeyDown={(e) => handleKeyPress(e)}
-              value={initiative}
-            />
-          ) : (
-            <span
-              className="stat-value"
-              onClick={() => {
-                setIsEditing(true);
-              }}
-            >
-              {initiative}
-            </span>
-          )}
-        </div>
-        <span className="creature-name">{data.name}</span>
-        <div className="status-field">
-          <div className="actions">
-            {renderButton("action-button", action)}
-            {renderButton("bonus-action-button", bonusAction)}
-            {renderButton("reaction-button", reaction)}
+        <div className="initiative-name-field">
+          <div className="initiative">
+            {isEditing ? (
+              <input
+                className="stat-value-input"
+                type="number"
+                min="-99"
+                max="99"
+                autoFocus
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onKeyDown={(e) => handleKeyPress(e)}
+                value={initiative}
+              />
+            ) : (
+              <span
+                className="stat-value"
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+              >
+                {initiative}
+              </span>
+            )}
           </div>
-          {renderButton("concentration", concentration)}
-          <span style={{ backgroundImage: `url(${hp})` }}>{data.hp}</span>
-          <span style={{ backgroundImage: `url(${ac})` }}>{data.ac}</span>
-          <span>{data.speed}</span>
+          <span className="creature-name">{data.name}</span>
         </div>
+        <div className="actions">
+          {renderButton("action-button", action)}
+          {renderButton("bonus-action-button", bonusAction)}
+          {renderButton("reaction-button", reaction)}
+        </div>
+        <div className="status-field">
+          {renderButton("concentration", concentration)}
+          <span
+            style={{
+              backgroundImage: `url(https://icons.iconarchive.com/icons/designbolts/free-valentine-heart/256/Heart-icon.png)`,
+            }}
+          >
+            {data.hp}
+          </span>
+          <span
+            style={{
+              backgroundImage: `url(https://cdn-icons-png.flaticon.com/512/361/361798.png)`,
+            }}
+          >
+            {data.ac}
+          </span>
+          <span
+            style={{
+              backgroundImage: `url(https://cdn0.iconfinder.com/data/icons/st-patrick-s-day-solic/24/Leprechaun-Shoes-s-512.png)`,
+            }}
+          >
+            {data.speed}
+          </span>
+        </div>
+        <button
+          className="context-menu-button"
+          onClick={(e) => contextMenu(e, data)}
+        ></button>
       </div>
     );
   }

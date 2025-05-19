@@ -7,115 +7,24 @@
 
 .creature-list {
   align-items: center;
-  height: 50vh;
+  height: auto;
   overflow-y: auto;
+  overscroll-behavior: contain;
   width: 100%;
 }
 
-.creature-entry {
-  display: flex;
-  justify-content: space-between;
+.initiative-header {
+  font-size: 1.5em;
   align-items: center;
-  border: 2px solid;
-  border-radius: 8px;
-  height: 50px;
-  margin: 4px;
-}
-
-.creature-entry * {
-  overflow: hidden;
+  padding: 0.5em;
   font-weight: bold;
-  font-size: 1.25em;
-  display: inline-block;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
-.creature-active {
-  transition-duration: 0.25s;
-  animation-duration: 0.25s;
-  background-color: rgb(134, 186, 134);
-}
-
-.delete-button {
-  font-size: small;
-  padding: 0;
-  margin: 0;
-  width: 25px;
-  height: 25px;
-  font-size: 0.5em;
-}
-
-.initiative-field {
-  display: flex;
-  margin-right: 0.25em;
-  justify-content: end;
-  width: 15%;
-  max-width: 20%;
-}
-
-.creature-name {
-  width: 20%;
-}
-
-.status-field {
-  display: grid;
-  vertical-align: middle;
+.initiative-header button {
+  margin: 0.25em;
   align-items: center;
-  display: flex;
-  justify-content: space-between;
-  margin-right: 0.5em;
-  width: 65%;
-}
-
-.actions {
-  vertical-align: middle;
-  align-items: center;
-}
-
-.actions button {
-  font-size: small;
-  color: black;
-  padding: 0;
-  background-color: gray;
-  border: solid 2px black;
-  margin: 0;
-  width: 25px;
-  height: 25px;
-  border-radius: 0;
-}
-
-.active-button {
-  background-color: rgb(125, 219, 245) !important;
-}
-
-.concentration {
-  color: black;
-  padding: 0;
-  line-height: 20px;
-  background-color: gray;
-  border: solid 1px white;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: inline-block;
-}
-
-.stat-value {
-  text-align: center;
-}
-
-.stat-value-input {
-  text-align: end;
-  max-width: 70px;
-  color: black;
-  background: none;
-  outline: none !important;
-  border: none;
-}
-
-.creature-name {
-  width: auto;
+  padding: 0.5em;
+  font-weight: normal;
 }
 
 .initiative-footer {
