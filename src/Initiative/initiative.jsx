@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Creature from "./creature";
 import ContextMenu from "./contextMenu";
 import "./initiative.css";
+import { create } from "@tauri-apps/plugin-fs";
 
 export default function Initiative({
   encounter,
@@ -27,6 +28,8 @@ export default function Initiative({
     });
   }
 
+  useEffect(() => {}, [encounter, updateCreature, createCreature]);
+
   useEffect(() => {
     if (!contextMenu.isToggled) {
       return;
@@ -38,7 +41,6 @@ export default function Initiative({
         !contextMenuRef.current.contains(e.target)
       ) {
         resetContextMenu();
-        console.log("Clicked outside the context menu");
       }
     }
 
@@ -78,35 +80,44 @@ export default function Initiative({
 
   return (
     <div className="initiative-panel" style={{ background: "beige" }}>
-      <div className="header-menu"></div>
-      <div>
+      <div className="initiative-header">
         <span>
-          Round: {encounter.round || 0} | Turn: {encounter.turn[0] || 0}
+          Round: {encounter.round || 0} | Curr. Initiative:{" "}
+          {encounter.initiatives[encounter.turn]}
         </span>
+        <button onClick={incrementTurn}>Next Turn</button>
+        <button onClick={incrementRound}>New Round</button>
       </div>
-      <button onClick={incrementTurn}>Next</button>
-      <button onClick={incrementRound}>New Round</button>
+
       <div className="creature-list">
         {encounter.creatures.map((creature) => {
           return (
             <Creature
-              className={`creature ${
-                creature.initiative === encounter.turn ? "creature-active" : ""
-              }`}
               data={creature}
-              isActive={creature.initiative === encounter.turn}
+              isActive={
+                creature.initiative === encounter.initiatives[encounter.turn]
+              }
               updateCreature={updateCreature}
               deleteCreature={deleteCreature}
               contextMenu={handleOnContextMenu}
-              key={creature.id}
+              key={
+                creature.id +
+                "-" +
+                creature.action +
+                "-" +
+                creature.bonusAction +
+                "-" +
+                creature.reaction
+              }
+              {...creature}
             />
           );
         })}
       </div>
-      <div className="initiative-footer">
+      {/* <div className="initiative-footer">
         <span>Footer</span>
         <button onClick={createCreature}>Add Creature</button>
-      </div>
+      </div> */}
       <ContextMenu
         contextMenuRef={contextMenuRef}
         isToggled={contextMenu.isToggled}

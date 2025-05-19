@@ -21,7 +21,8 @@
 }
 
 .Horizontal {
-  height: auto !important;
+  overflow-y: hidden !important;
+  height: 100vh !important;
 }
 
 .custom-gutter-horizontal:hover {

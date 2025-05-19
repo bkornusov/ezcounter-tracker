@@ -1,7 +1,7 @@
 {
   "name": "test encounter",
   "date": "2025-03-17",
-  "round": 1,
+  "round": 5,
   "turn": 1,
   "creatures": [
     {
@@ -12,34 +12,34 @@
       "ac": 12,
       "speed": 30,
       "action": true,
-      "bonusAction": false,
-      "reaction": false,
-      "concentration": true
-    },
-    {
-      "id": 5678,
-      "name": "test2",
-      "initiative": 15,
-      "hp": 30,
-      "ac": 15,
-      "speed": 30,
-      "action": true,
       "bonusAction": true,
       "reaction": true,
-      "concentration": true
+      "concentration": false
     },
     {
       "id": 1234,
       "name": "test",
-      "initiative": 10,
+      "initiative": 17,
       "hp": 30,
       "ac": 15,
       "speed": 30,
-      "action": true,
-      "bonusAction": true,
+      "action": false,
+      "bonusAction": false,
+      "reaction": false,
+      "concentration": false
+    },
+    {
+      "id": 5678,
+      "name": "test2",
+      "initiative": 12,
+      "hp": 30,
+      "ac": 15,
+      "speed": 30,
+      "action": false,
+      "bonusAction": false,
       "reaction": false,
       "concentration": false
     }
   ],
-  "initiatives": [25, 15, 10]
+  "initiatives": [25, 17, 12]
 }

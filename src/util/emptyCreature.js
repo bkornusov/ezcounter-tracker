@@ -1,6 +1,6 @@
 const emptyCreature = {
   id: "0",
-  name: "",
+  name: "Creature",
   initiative: 0,
   hp: 0,
   ac: 0,

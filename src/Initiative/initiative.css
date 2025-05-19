@@ -7,9 +7,24 @@
 
 .creature-list {
   align-items: center;
-  height: 50vh;
+  height: auto;
   overflow-y: auto;
+  overscroll-behavior: contain;
   width: 100%;
+}
+
+.initiative-header {
+  font-size: 1.5em;
+  align-items: center;
+  padding: 0.5em;
+  font-weight: bold;
+}
+
+.initiative-header button {
+  margin: 0.25em;
+  align-items: center;
+  padding: 0.5em;
+  font-weight: normal;
 }
 
 .initiative-footer {

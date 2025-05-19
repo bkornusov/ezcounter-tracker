@@ -11,7 +11,7 @@
 
 .creature-entry * {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.15em;
   display: inline-block;
   background-repeat: no-repeat;
   background-position: center;
@@ -121,6 +121,7 @@
 
 .creature-name {
   width: auto;
+  font-size: 1em;
 }
 
 .context-menu-button {

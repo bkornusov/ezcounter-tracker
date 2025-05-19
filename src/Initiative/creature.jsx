@@ -23,19 +23,19 @@ export default function Creature({
       setInitiative(e.target.value);
     }
     setInitiative(e.target.value);
-    updateCreature({ ...data, initiative: e.target.value });
   }
 
   function handleBlur() {
     setIsEditing(false);
-    handleChange(data.name, initiative);
+    updateCreature({ ...data, initiative: parseInt(initiative) });
+    console.log("Initiative changed to:", initiative);
   }
 
   function handleKeyPress(e) {
     if (e.key === "Enter") {
       setIsEditing(false);
-      handleChange(data.name, initiative);
     }
+    updateCreature({ ...data, initiative: parseInt(initiative) });
   }
 
   function handleToggleAction(buttonClass) {

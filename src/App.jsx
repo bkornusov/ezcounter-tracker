@@ -11,7 +11,6 @@ import emptyCreature from "./util/emptyCreature.js";
 function App() {
   const [encounter, setEncounter] = useState(emptyEncounter);
   // const [currentTurn, setCurrentTurn] = useState([0, null]);
-  const [round, setRound] = useState(1);
 
   // document.onkeydown = function (e) {
   //   if (e.key === "F5") {
@@ -21,32 +20,18 @@ function App() {
 
   // Update dependent states when `encounter` changes
   useEffect(() => {
-    const sortedCreatures = (encounter.creatures || []).sort(
-      (a, b) => b.initiative - a.initiative
-    );
-    const initiatives = [
-      ...new Set(encounter.creatures.map((creature) => creature.initiative)),
-    ];
+    // const sortedCreatures = (encounter.creatures || []).sort(
+    //   (a, b) => b.initiative - a.initiative
+    // );
+    // const initiatives = [
+    //   ...new Set(encounter.creatures.map((creature) => creature.initiative)),
+    // ];
     // setEncounter((prev) => ({
     //   ...prev,
     //   creatures: sortedCreatures,
     //   initiatives,
     // }));
-    // setEncounter({ ...encounter, creatures: sortedCreatures });
-    // setEncounter({
-    //   ...encounter,
-    //   creatures: sortedCreatures,
-    //   initiatives,
-    //   turn: initiatives[0],
-    // });
-    // setRound(encounter.round || 1);
   }, [encounter]);
-
-  const sortedCreatures = (creatures) => {
-    return (encounter.creatures || []).sort(
-      (a, b) => b.initiative - a.initiative
-    );
-  };
 
   const handleOpen = async () => {
     try {
@@ -68,6 +53,7 @@ function App() {
         });
         setEncounter({});
         setEncounter(JSON.parse(fileContent));
+        encounter.initiatives.sort().reverse();
         console.log(encounter);
         console.log("File opened successfully!");
       }
@@ -102,53 +88,6 @@ function App() {
     }
   };
 
-  const handleCreatureUpdate = (updatedCreature) => {
-    // Update the creature in the list
-    const updatedList = encounter.creatures.map((creature) =>
-      creature.id === updatedCreature.id ? updatedCreature : creature
-    );
-
-    // Sort the updated list by initiative
-    const sortedList = updatedList.sort((a, b) => b.initiative - a.initiative);
-
-    // Update the global state
-    setEncounter((prev) => ({
-      ...prev,
-      creatures: sortedList,
-    }));
-    // Update the current turn if necessary
-    if (currentTurn[1] === updatedCreature.id) {
-      setEncounter(...encounter, [0, sortedList[0].id]);
-    }
-    // Update the round if necessary
-    if (currentTurn[0] >= sortedList.length) {
-      setRound((prev) => prev + 1);
-      setEncounter(...encounter, [0, sortedList[0].id]);
-    }
-  };
-
-  const handleCreatureDelete = (id) => {
-    // Delete the creature from the list
-
-    // Sort the updated list by initiative
-    const sortedList = encounter.creatures
-      .filter((creature) => creature.id !== id)
-      .sort((a, b) => b.initiative - a.initiative);
-    // const newInitiatives = encounter.initiatives.filter(
-    //   (initiative) => initiative !== id
-    // );
-
-    // Update the global state
-    setEncounter((prev) => ({
-      ...prev,
-      creatures: sortedList,
-    }));
-    // Update the current turn if necessary
-    // if (currentTurn[1] === id) {
-    //   setEncounter(...encounter, [0, sortedList[0]?.id || null]);
-    // }
-  };
-
   const handleCreatureCreate = (creatureId) => {
     const maxId = encounter.creatures.length
       ? Math.max(...encounter.creatures.map((c) => c.id))
@@ -168,12 +107,10 @@ function App() {
     newCreature.id = newId;
 
     // Clone arrays before modifying
-    const newCreatures = [...encounter.creatures, newCreature];
-    const newInitiatives = encounter.initiatives.includes(
-      newCreature.initiative
-    )
-      ? [...encounter.initiatives]
-      : [...encounter.initiatives, newCreature.initiative];
+    const newCreatures = [...encounter.creatures, newCreature].sort(
+      (a, b) => b.initiative - a.initiative
+    );
+    const newInitiatives = [...new Set(newCreatures.map((c) => c.initiative))];
 
     setEncounter((prev) => ({
       ...prev,
@@ -181,31 +118,117 @@ function App() {
       initiatives: newInitiatives,
     }));
 
-    console.log("List of creatures: ", newCreatures);
-    console.log("List of initiatives: ", newInitiatives);
-    console.log(
-      "List of creature Ids: ",
-      newCreatures.map((c) => c.id)
+    console.log("New creature created: ", newCreature);
+  };
+
+  const handleCreatureUpdate = (updatedCreature) => {
+    console.log("Updating creature: ", updatedCreature);
+    // Update the creature in the list
+    const updatedList = encounter.creatures.map((creature) =>
+      creature.id === updatedCreature.id
+        ? { ...creature, ...updatedCreature }
+        : creature
     );
+
+    // Sort the updated list by initiative
+    const sortedList = updatedList.sort((a, b) => b.initiative - a.initiative);
+
+    // Update the global state
+    setEncounter((prev) => ({
+      ...prev,
+      creatures: sortedList,
+    }));
+    const newInitiatives = [...new Set(sortedList.map((c) => c.initiative))];
+
+    setEncounter((prev) => ({
+      ...prev,
+      initiatives: newInitiatives,
+    }));
+
+    console.log("new initiatives: ", newInitiatives);
+    console.log("Initiatives: ", encounter.initiatives);
+  };
+
+  const handleCreatureDelete = (id) => {
+    // Delete the creature from the list
+
+    // Sort the updated list by initiative
+    const sortedList = encounter.creatures
+      .filter((creature) => creature.id !== id)
+      .sort((a, b) => b.initiative - a.initiative);
+
+    const newInitiatives = sortedList.map((c) => c.initiative);
+    // Update the global state
+    setEncounter((prev) => ({
+      ...prev,
+      creatures: sortedList,
+      initiatives: newInitiatives,
+    }));
+    // Update the current turn if necessary
+    // if (currentTurn[1] === id) {
+    //   setEncounter(...encounter, [0, sortedList[0]?.id || null]);
+    // }
+  };
+
+  const resetCreatureActions = (initiative) => {
+    setEncounter((prev) => ({
+      ...prev,
+      creatures: prev.creatures.map((creature) =>
+        creature.initiative === initiative
+          ? { ...creature, action: true, bonusAction: true }
+          : creature
+      ),
+    }));
+  };
+
+  const resetCreatureReaction = (initiative) => {
+    setEncounter((prev) => ({
+      ...prev,
+      creatures: prev.creatures.map((creature) =>
+        creature.initiative === initiative
+          ? { ...creature, reaction: true }
+          : creature
+      ),
+    }));
   };
 
   const nextRound = () => {
     setEncounter((prev) => ({
       ...prev,
       round: prev.round ? prev.round + 1 : 1,
+      turn: 0,
     }));
-    setEncounter(...encounter, [0, encounter.creatures[0].id]);
   };
 
   const nextTurn = () => {
-    // if (currentTurn[0] === encounter.creatures.length - 1) {
-    //   nextRound();
-    //   return;
-    // }
-    // setCurrentTurn([
-    //   currentTurn[0] + 1,
-    //   encounter.creatures[currentTurn[0] + 1].id,
-    // ]);
+    // Get the initiative of the creature whose turn is ending
+    const endingInitiative = encounter.initiatives[encounter.turn];
+
+    // Calculate the next turn index
+    let nextTurnIndex = encounter.turn;
+    if (nextTurnIndex < encounter.initiatives.length - 1) {
+      nextTurnIndex += 1;
+    } else {
+      nextTurnIndex = 0;
+      nextRound();
+    }
+
+    // Get the initiative of the creature whose turn is starting
+    const startingInitiative = encounter.initiatives[nextTurnIndex];
+
+    // 1. Reset actions for the creature whose turn just ended
+    resetCreatureActions(endingInitiative);
+
+    // 2. Update the turn index
+    setEncounter((prev) => ({
+      ...prev,
+      turn: nextTurnIndex,
+    }));
+
+    // 3. Reset reaction for the creature whose turn is starting
+    resetCreatureReaction(startingInitiative);
+
+    console.log("Turn advanced to: ", nextTurnIndex);
   };
 
   return (
